@@ -15,7 +15,7 @@ img{
 
 .card{
     width: 15rem;
-    height: 15rem;
+    height: auto;
     padding: 15px;
     display: inline-grid;
     text-align: center;

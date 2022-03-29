@@ -10,3 +10,5 @@ if else syntax
 
 if (the form is submitted) {run the submit event} 
 else (the timer runs out) {}
+
+

@@ -5,16 +5,16 @@ const studyBttn = document.getElementById('study-button')
 const triviaBttn = document.getElementById('quiz-button')
 const howToPlay = document.getElementById('how-to-play')
 const languageSelect = document.getElementById('language-select')
-
+let language;
 
 const fetchCountries = () => {
     return fetch('https://restcountries.com/v3.1/all')
         .then(resp => resp.json())
 }
 
-languageSelect.addEventListener('click', (e) => {
+languageSelect.addEventListener('change', (e) => {
     const language = e.target.value
-    return language
+    return language //need to figure out how to use this value in renderCountries, possibly on click re-render and pass on language as varible? I'll try this in the morning!
 })
 
 // create Card for each Country
@@ -32,15 +32,20 @@ const renderCountries = (country) => {
     const countryName = document.createElement('h3')
     countryName.textContent = country.name.common
 
+    const translation = document.createElement('h2')
+    translation.textContent = country.translations.kor.common //kor should be replaced by language
+    console.log(country.translations.language)
+
     const population = document.createElement('p')
     population.textContent= `Population: ${country.population}`
 
     const continent = document.createElement('p')
     continent.textContent = `Continent: ${country.continents}`
 
-    countryCard.append(div, countryName, population, continent)
+    countryCard.append(div, countryName, translation, population, continent)
     countryList.appendChild(countryCard)
 }
+
 
 // trivia page
 const renderTrivia = () => {
