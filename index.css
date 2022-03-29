@@ -13,11 +13,6 @@ img{
     text-align: center;
 }
 
-.flags{
-    text-align: center;
-    object-fit: cover;
-}
-
 .card{
     width: 15rem;
     height: 15rem;
@@ -29,6 +24,9 @@ img{
     background-color: rgb(10, 187, 128);
     border-radius: 10px;
 }
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(3, 206, 94, 0.685);
+}
 
 .row{
     text-align: center;
@@ -36,29 +34,36 @@ img{
 }
 
 .header{
+    display: inline-block;
     max-height: 50px;
     width: 100px;
 }
 
 #start-over{
-    display: block;
-    margin: 0 auto;
+    /* float: center; */
 }
 
 #trivia-game{
-    width: 50%;
-    border-radius: 10px;
-    background-color: rgb(14, 101, 172);
+    text-align: center;
+    /* width: 50%; */
+    /* border-radius: 10px;
+    background-color: rgb(14, 101, 172); */
 }
 
-#country-container, #trivia-container, #how-to-play, #form, #scoreboard{
+#country-container, #how-to-play, #form, #scoreboard{
     text-align: center;
 }
 
-#hint-button{
+#hint{
     float: left;
+    padding-left: 70px;
 }
 
 #timer{
     float: right;
+    padding-right: 70px;
+}
+
+#start-over, #hint, #timer{
+    display: inline-block;
 }

@@ -4,11 +4,18 @@ const triviaContainer = document.getElementById('trivia-container')
 const studyBttn = document.getElementById('study-button')
 const triviaBttn = document.getElementById('quiz-button')
 const howToPlay = document.getElementById('how-to-play')
+const languageSelect = document.getElementById('language-select')
+
 
 const fetchCountries = () => {
     return fetch('https://restcountries.com/v3.1/all')
         .then(resp => resp.json())
 }
+
+languageSelect.addEventListener('click', (e) => {
+    const language = e.target.value
+    return language
+})
 
 // create Card for each Country
 const renderCountries = (country) => {
@@ -41,26 +48,42 @@ const renderTrivia = () => {
     triviaGame.id = 'trivia-game'
 
     const hintBttn = document.createElement('h3')
-    hintBttn.id = 'hint-button'
+    hintBttn.id = 'hint'
     hintBttn.textContent = ' hint? '
 
     const startOver = document.createElement('button')
     startOver.id = 'start-over'
     startOver.textContent = 'START OVER'
-
-    const timer = document.createElement('h1')
-    timer.textContent = 30
+    startOver.addEventListener('click', reload)
+    
+    const timer = document.createElement('h3')
+    timer.textContent = 60
     timer.id = 'timer'
+    
+    const h3 = document.createElement('h3')
+    h3.textContent = 'Answer:'
 
     const form = document.createElement('form')
     form.id = 'form'
-    const h3 = document.createElement('h3')
-    h3.textContent = 'Answer:'
-    const input = document.createElement('input')
+    
+    const input = document.createElement('input');
     input.type = 'text'
     input.name = 'answer'
     input.placeholder = 'Type answer here'
-    form.append(h3, input)
+    
+    const submit = document.createElement('input');
+    submit.type = 'submit'
+    submit.name = 'submit'
+    submit.class = 'submit'
+    
+    form.append(input, submit)
+    
+    submit.addEventListener("submit", foo)
+
+    function foo(foo) {
+        event.preventDefault();
+        console.log(event.target)
+    }
 
     const scoreboard = document.createElement('div')
     scoreboard.id = 'scoreboard'
@@ -68,9 +91,21 @@ const renderTrivia = () => {
     h2.textContent = 'Scoreboard: '
     scoreboard.append(h2)
 
-    triviaGame.append(hintBttn, startOver, timer, form, scoreboard)
+    triviaGame.append(hintBttn, startOver, timer, h3, form, scoreboard)
     triviaContainer.append(triviaGame)
 }
+
+const decrementCounter = () => {
+    let timer = document.getElementById('timer')
+    if(timer.innerText > 0 ){
+        timer.innerText = parseInt(timer.innerText) - 1
+    }
+}
+
+const reload = () => {
+    location.reload()
+}
+
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', fetchCountries)
@@ -86,4 +121,5 @@ triviaBttn.addEventListener('click', () => {
     countryList.replaceChildren()
     triviaContainer.replaceChildren()
     renderTrivia()
+    setInterval(decrementCounter, 1000)
 })
