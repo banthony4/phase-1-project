@@ -1,0 +1,19 @@
+h1 {
+    text-align: center
+}
+
+img {
+    height: 100px;
+    width: auto;
+    text-align: center;
+}
+
+.card {
+    text-align: center;
+    border: grey solid 1px;
+    padding: 1rem;
+    width: 15rem;
+    height: 15rem;
+    display: inline-grid;
+    margin: 1rem 2rem;
+}
