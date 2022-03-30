@@ -11,4 +11,38 @@ if else syntax
 if (the form is submitted) {run the submit event} 
 else (the timer runs out) {}
 
+to do (bella): 
+<!-- 1. create an addlistenerevent for submit for the answer form , which appends the input text onto the scoreboard --> (DONE!)
+2. try fetch for the hints, even if its just console logging. then try to append below where the fetched translated nation names will be
 
+plan for randomized grabbing name function:
+- manually select each nation from a fetch request, and assign a variable to each. 
+    - ie if Sweden's name object is country.name
+- create an array of nation names
+
+fetch()
+.then
+.then(country => {
+    const china = country.name.ch
+    const sweden = country.name.swe
+    
+    [china, sweden]
+    
+    (china is returned)
+    
+    (input value) === china
+    
+
+    })
+
+    const people = ['Ben', 'troy', 'max', 'luke']
+    const [b, , m,l] = people
+    console.log(b)
+
+    const countryArray = [US, China, Italy, Sweden...]
+    const [us, country.name.ch, it, swe] = countryArray
+    console.log(it) --> Italy
+
+Backup: 
+    -use flags instead of translations, set alt = 'country name'
+    -compare input value with alt value
