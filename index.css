@@ -30,7 +30,7 @@ img{
 
 .row{
     text-align: center;
-    display: flex;
+    /* display: flex; */
 }
 
 .header{
@@ -66,4 +66,14 @@ img{
 
 #start-over, #hint, #timer{
     display: inline-block;
+}
+
+ul{
+    list-style-type: none;
+    /* float: left; */
+}
+
+li{
+    list-style-type: none;
+    
 }
