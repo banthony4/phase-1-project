@@ -5,7 +5,7 @@ const studyBttn = document.getElementById('study-button')
 const triviaBttn = document.getElementById('quiz-button')
 const howToPlay = document.getElementById('how-to-play')
 const languageSelect = document.getElementById('language-select')
-let language;
+const language = 'spa'
 
 const fetchCountries = () => {
     return fetch('https://restcountries.com/v3.1/all')
@@ -33,7 +33,7 @@ const renderCountries = (country) => {
     countryName.textContent = country.name.common
 
     const translation = document.createElement('h2')
-    translation.textContent = country.translations.kor.common //kor should be replaced by language
+    translation.textContent = country.translations.kor //kor should be replaced by language
     console.log(country.translations.language)
 
     const population = document.createElement('p')

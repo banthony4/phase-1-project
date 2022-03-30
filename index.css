@@ -30,7 +30,7 @@ img{
 
 .row{
     text-align: center;
-    display: flex;
+    /* display: flex; */
 }
 
 .header{
