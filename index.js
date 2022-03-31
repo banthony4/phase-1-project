@@ -5,6 +5,8 @@ const studyBttn = document.getElementById('study-button');
 const triviaBttn = document.getElementById('quiz-button');
 const howToPlay = document.getElementById('how-to-play');
 const languageSelect = document.getElementById('language-select');
+const flagsArray = [];
+const countriesArray = [];
 let incorrect = 0;
 let correct = 0;
 const baseUrl = 'https://restcountries.com/v3.1/all';
@@ -25,6 +27,7 @@ const fetchCountries = () => {
 //         renderRandomCountry(countriesArray)
 //     }) //need to figure out how to use this value in renderCountries, possibly on click re-render and pass on language as varible? I'll try this in the morning!
 // });
+
 
 // create Card for each Country
 const renderCountries = (country) => {
@@ -56,22 +59,12 @@ const renderCountries = (country) => {
     countryList.appendChild(countryCard)
 };
 
-// const flagsArray = []
-// const renderHint = (country) => {
-//     flagsArray.push(country.flags.svg)
-    // let hint = Object.values(country.languages);
-    // console.log(hint) // convert hint from arr to string? cringes this needs work. it's kind of working but needs more work. 
-    // hint.toString();
-    // const h3 = document.createElement("h3");
-    // const nameHintDiv  = document.querySelector("#name-hint-div");
-    // h3.textContent = hint;
-    // nameHintDiv.append(h3);
-    // }
+const renderHint = () => {
+    document.getElementById('show-hint').textContent = 'show hint here'
+}
 
 
-//Render Randomized Country to Trivia Game
-const flagsArray = [];
-const countriesArray = [];
+//Render Randomized Country flag to Trivia Game
 const countryFlags = () => {
     fetchCountries()
     .then(country => {
@@ -103,17 +96,17 @@ const renderTrivia = () => {
     const hintBttn = document.createElement('h3')
     hintBttn.id = 'hint'
     hintBttn.textContent = ' hint? '
-    // hintBttn.addEventListener("click", () => {
-    //     fetchHints()
-    //     .then(nationData => nationData.forEach(renderHint))
-    // })
+    hintBttn.addEventListener("click", renderHint)
+    const showHint = document.createElement('h4')
+    showHint.id = 'show-hint'
+    hintBttn.append(showHint)
 
     const startOver = document.createElement('button');
     startOver.id = 'start-over'
     startOver.textContent = 'START OVER'
     startOver.addEventListener('click', reload);
     
-    const timer = document.createElement('h3');
+    const timer = document.createElement('h1');
     timer.textContent = 60
     timer.id = 'timer'
     
@@ -135,13 +128,13 @@ const renderTrivia = () => {
     // append each variable into an array, from which ben will randomly select a name.
     //
     
-    
-
     const h3 = document.createElement('h3');
     h3.textContent = 'Answer:'
+    h3.id = 'h3'
 
     const form = document.createElement('form');
     form.id = 'form'
+    form.addEventListener("submit", (e) => submitAnswer(e));
     
     const input = document.createElement('input');
     input.type = 'text'
@@ -162,9 +155,9 @@ const renderTrivia = () => {
     const h2 = document.createElement('h2');
     h2.textContent = 'Scoreboard: '
     scoreboard.append(h2);
-    const score = document.createElement('p')
+    const score = document.createElement('h2')
     score.id = 'score'
-    score.textContent = `Correct: ${correct} Incorrect: ${incorrect}`
+    score.innerHTML = `<span class='right'>Correct: ${correct}</span><span class='wrong'> Incorrect: ${incorrect}</span>`
     
     // REMINDER: FETCH BELOW IS USED TO VIEW API ARRAY/OBJECT ELEMENTS IN CONSOLE. DO NOT DELETE!!! 
     // fetch(baseUrl)
@@ -180,71 +173,62 @@ const renderTrivia = () => {
         // append variabled input value to the scoreboard? 
         // remember the convert to array option, potentially use forEach to create a list tag for each input value? (can style out the bullet points, etc. later. might be useful to group like this under same tag type)
     // 
-
-    form.addEventListener("submit", (e) => submitAnswer(e));
-
-    // alt version of the submit answer event:
-
-    // const ul = document.createElement("ul")
-    // ul.id = "ul"
-    // scoreboard.append(ul)
-
-    // form.addEventListener("submit", submitAnswer);
-
-    // function submitAnswer(event) {
-    //     event.preventDefault();
-    //     // console.log("frog submit!")
-        
-    //     const newAnswer = document.querySelector("#text-input").value;
-    //     // console.log(newAnswer);
-    //     const answersArr = [];
-    //     answersArr.unshift(newAnswer);
-
-    //     answersArr.forEach((answer) => {
-    //        const li = document.createElement("li");
-    //        li.append(answer);
-    //         ul.append(li);
-    //     });
-    // }
-    // note: answers are currently within li elements that are appended to a ul tag that is appended to the scoreboard div. however, if needed we could take away the parent ul tag and append each li (with appended answer) to the scoreboard div directly. 
-
-
     triviaGame.append(hintBttn, startOver, timer, nameAndHint, h3, form, scoreboard, score);
     triviaContainer.append(triviaGame);
 }
 
 function submitAnswer(e) {
     e.preventDefault();
+    document.getElementById('show-hint').textContent = ''
     const correctAnswer = document.getElementById('country-flag')
     const score = document.getElementById('score')
     const timer = document.getElementById('timer')
-    if(e.target.answer.value.toLowerCase() === correctAnswer.alt.toLowerCase()){
-        score.textContent = `Correct: ${++correct} Incorrect: ${incorrect}`
-        timer.innerText = parseInt(timer.innerText) + 10
-    } else {
-        score.textContent = `Correct: ${correct} Incorrect: ${++incorrect}`
-        timer.innerText = parseInt(timer.innerText) - 5
-
-    }
     const triviaBoard = document.getElementById('trivia-game')
-    const answer = document.createElement('li')
-    answer.innerText = e.target.answer.value
-    triviaBoard.append(answer)
+    const answer = document.createElement('h3')
+    if(e.target.answer.value.toLowerCase() === correctAnswer.alt.toLowerCase()){
+        score.innerHTML = `<span class='right'>Correct: ${++correct}</span><span class='wrong'> Incorrect: ${incorrect}</span>`
+        timer.innerText = parseInt(timer.innerText) + 10
+        answer.innerText = e.target.answer.value
+        answer.style.color = 'rgb(32, 185, 32)'
+        triviaBoard.append(answer)
+    } else {
+        score.innerHTML = `<span class='right'>Correct: ${correct}</span><span class='wrong'> Incorrect: ${++incorrect}</span>`
+        timer.innerText = parseInt(timer.innerText) - 5
+        answer.innerText = e.target.answer.value
+        answer.innerText = e.target.answer.value
+        answer.style.color = 'red'
+        triviaBoard.append(answer)
+    }
     countryFlags()
     form.reset();
 };
-
 
 const decrementCounter = () => {
     let timer = document.getElementById('timer')
     if(timer.innerText > 0 ){
         timer.innerText = parseInt(timer.innerText) - 1
+        if(timer.innerText < 10){
+            timer.style.color = 'red';
+        }
+    } else {
+        clearInterval(timer)
+        gameOver()
     }
 };
+
+const gameOver = () => {
+    document.getElementById('timer').style.display = 'none'
+    document.getElementById('hint').style.display = 'none'
+    document.getElementById('country-flag').style.display = 'none'
+    document.getElementById('form').style.display = 'none'
+    document.getElementById('timer').style.display = 'none'
+    document.getElementById('scoreboard').style.display = 'none'
+    document.getElementById('h3').textContent = 'GAME OVER!'
+}
+
 const reload = () => {
     location.reload();
 };
-
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
