@@ -38,13 +38,16 @@ const renderCountries = (country) => {
     div.className = 'flag-container'
     const countryFlag = document.createElement('img')
     countryFlag.src = country.flags.svg
-    countryFlag.alt = country.name.common
+    countryFlag.alt = country.name.official
     countryFlag.class = 'flags'
     div.append(countryFlag)
 
     const countryName = document.createElement('h3')
     countryName.className = 'country-name'
-    countryName.textContent = country.name.common
+    countryName.textContent = country.name.official
+
+    const countryCapital = document.createElement('h4')
+    countryCapital.textContent = `Capital: ${country.capital}`
 
     // const translation = document.createElement('h2')
     // translation.textContent = country.translations.kor.common //kor should be replaced by language
@@ -56,41 +59,16 @@ const renderCountries = (country) => {
     const continent = document.createElement('p')
     continent.textContent = `Continent: ${country.continents}`
 
-    countryCard.append(div, countryName, population, continent)
+    countryCard.append(div, countryName, countryCapital, population, continent)
     countryList.appendChild(countryCard)
 };
-
-
-//Render Randomized Country flag to Trivia Game
-const countryFlags = () => {
-    fetchCountries()
-    .then(country => {
-        country.forEach((country)=> {
-            flagsArray.push(country.flags.svg)
-            countriesArray.push(country.name.common)
-        })
-        renderRandomFlag(flagsArray, countriesArray)
-    })
-}
-const renderRandomFlag = (flags, countries) => {
-    const randomIndex = Math.floor(Math.random() * flags.length)
-    const flagImg = flags[randomIndex]
-    const flagAlt = countries[randomIndex]
-    appendFlagToTrivia(flagImg, flagAlt)
-}
-const appendFlagToTrivia = (flagImg, flagAlt) => {
-    const flag = document.getElementById('country-flag')
-    flag.src = flagImg
-    flag.alt = flagAlt
-}
-
 
 // trivia page
 const renderTrivia = () => {
     const triviaGame = document.createElement('div')
     triviaGame.id = 'trivia-game'
 
-    const hintBttn = document.createElement('h3')
+    const hintBttn = document.createElement('h1')
     hintBttn.id = 'hint'
     hintBttn.textContent = ' hint? '
     hintBttn.addEventListener("click", renderHint)
@@ -141,6 +119,7 @@ const renderTrivia = () => {
     const scoreboard = document.createElement('div');
     scoreboard.id = 'scoreboard'
     const h2 = document.createElement('h2');
+    h2.id = "h2"
     h2.textContent = 'Scoreboard: '
     scoreboard.append(h2);
     const score = document.createElement('h2')
@@ -158,15 +137,41 @@ const renderTrivia = () => {
     triviaContainer.append(triviaGame);
 }
 
+//Render Randomized Country flag to Trivia Game
+const countryFlags = () => {
+    fetchCountries()
+    .then(country => {
+        country.forEach((country)=> {
+            flagsArray.push(country.flags.svg)
+            countriesArray.push(country.name.official)
+        })
+        renderRandomFlag(flagsArray, countriesArray)
+    })
+}
+const renderRandomFlag = (flags, countries) => {
+    const randomIndex = Math.floor(Math.random() * flags.length)
+    const flagImg = flags[randomIndex]
+    const flagAlt = countries[randomIndex]
+    appendFlagToTrivia(flagImg, flagAlt)
+}
+const appendFlagToTrivia = (flagImg, flagAlt) => {
+    const flag = document.getElementById('country-flag')
+    flag.src = flagImg
+    flag.alt = flagAlt
+}
+
+
+// functions for trivia game
 function submitAnswer(e) {
     e.preventDefault();
     document.getElementById('show-hint').textContent = ''
-    const correctAnswer = document.getElementById('country-flag')
+    const correctAnswer = document.getElementById('country-flag').alt.toLowerCase()
     const score = document.getElementById('score')
     const timer = document.getElementById('timer')
     const triviaBoard = document.getElementById('trivia-game')
     const answer = document.createElement('h3')
-    if(e.target.answer.value.toLowerCase() === correctAnswer.alt.toLowerCase()){
+    answer.className = 'answer-list'
+    if(correctAnswer.includes(e.target.answer.value.toLowerCase()) && e.target.answer.value.length > 3){
         score.innerHTML = `<span class='right'>Correct: ${++correct}</span><span class='wrong'> Incorrect: ${incorrect}</span>`
         timer.innerText = parseInt(timer.innerText) + 10
         answer.innerText = e.target.answer.value
@@ -174,9 +179,8 @@ function submitAnswer(e) {
         triviaBoard.append(answer)
     } else {
         score.innerHTML = `<span class='right'>Correct: ${correct}</span><span class='wrong'> Incorrect: ${++incorrect}</span>`
-        timer.innerText = parseInt(timer.innerText) - 5
-        answer.innerText = e.target.answer.value
-        answer.innerText = e.target.answer.value
+        timer.innerText = parseInt(timer.innerText) - 10
+        answer.innerText = `Your answer: ${e.target.answer.value}; Correct answer: ${correctAnswer}`
         answer.style.color = 'red'
         triviaBoard.append(answer)
     }
@@ -185,11 +189,13 @@ function submitAnswer(e) {
 };
 
 const renderHint = () => {
-    const img = document.getElementById('')
-    fetch(`
-    console.log(img)https://restcountries.com/v3.1/name/${img.alt}`)
+    const img = document.getElementById('country-flag')
+    const showHint = document.getElementById('show-hint')
+    fetch(`https://restcountries.com/v3.1/name/${img.alt}`)
     .then(resp => resp.json())
-    .then(country => document.getElementById('show-hint').textContent = country.capital)
+    .then(country => country.forEach(country => {
+        showHint.textContent = `Capital: ${country.capital}`
+    }))
 }
 
 const decrementCounter = () => {
@@ -213,13 +219,12 @@ const gameOver = () => {
     document.getElementById('timer').style.display = 'none'
     document.getElementById('scoreboard').style.display = 'none'
     document.getElementById('h3').style.display = "none"
+    document.getElementById("show-hint").style.display = "none"
     const img = document.getElementById("game-over")
     img.src = "https://lh3.googleusercontent.com/F35zenxbXDwNYKyHnEWkcRO7srs80fT59yBxpUYRwUP46H1Qty_j5PYPmRYSCPecBfJIF--wh5N4RKvgFUqmd23QuYFWNckC0H2760rK11mlKzDTUU_9e2v_iVJs7GbB3Hx_VOKQnw=w2400"
 }
 
-const reload = () => {
-    location.reload();
-};
+
 
 // search for countries
 const addSearchBar = () => {
@@ -241,12 +246,17 @@ const countrySearch = (e) => {
     const countrySearchName = document.querySelectorAll('.country-name')
     countrySearchName.forEach((name) => {
         if(name.textContent.toLowerCase().includes(value)) {
-            name.parentElement.style.display = 'block'
+            name.parentElement.style.display = 'inline-grid'
         } else {
             name.parentElement.style.display = 'none'
         }
     })
 }
+
+
+const reload = () => {
+    location.reload();
+};
 
 
 // Event Listeners

@@ -47,10 +47,6 @@ img{
     color: red;
 }
 
-#start-over{
-    /* float: center; */
-}
-
 #trivia-game{
     justify-content: center;
     text-align: center;
@@ -93,8 +89,10 @@ li{
     
 }
 
-#p1, #p2, #p3{
-    font-family: Arial
+#p1, #p2, #p3, #p4, #p5, #p6{
+    font-family: Arial;
+    margin-left : 70px;
+    margin-right : 70px
 }
 
 #model-citizen {
@@ -106,5 +104,66 @@ li{
 
 #country-flag {
     max-width : 37%; 
+    height : auto;
+    padding-top : 50px
+}
+
+#h3 {
+    margin-top: -15px;
+}
+
+#game-over {
+    max-width: 100%; 
     height : auto
 }
+#score, .answer-list{
+    padding-bottom: 10px;
+}
+#start-over {
+    margin-top : 30px;
+}
+
+.right, .wrong {
+    font-family: Arial
+}
+
+.right {
+    padding : 10px;
+}
+
+.wrong {
+    padding : 10 px;
+}
+
+.answer-list {
+    font-family: Arial;
+}
+
+h3 {
+    font-family: Arial;
+}
+
+#are-you {
+    max-width: 50%; 
+    height: auto;
+}
+
+#hint {
+    text-decoration : underline;
+}
+
+#quiz-button {
+    margin-left: -30px;
+}
+
+#study-button {
+    margin-right : -30px; 
+}
+
+#study-button, #quiz-button, #p5 {
+    display: inline-block;
+}
+
+/* #h2 {
+    font-family: Arial;
+} */
