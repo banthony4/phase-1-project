@@ -124,19 +124,6 @@ const renderTrivia = () => {
     flag.id = 'country-flag'
     nameAndHint.append(flag);
 
-    // bella goals/workflow
-        // goal: create framework to add meaningful variables to array that ben will randomize and we will append to the "#translated-name" h3 element as the translated name whose english title the user will need to guess
-    
-    // steps:
-    // look up path to each country name (in eng) in api
-    // make a fetch request to the api to get country data. 
-    // in the callback function (second .then()), grab the direct path to accessing the english name/title of each country.
-    // manually set a variable (representing each country, ex: "China") to each path 
-    // append each variable into an array, from which ben will randomly select a name.
-    //
-    
-    
-
     const h3 = document.createElement('h3');
     h3.textContent = 'Answer:'
 
