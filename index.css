@@ -39,15 +39,30 @@ img{
     width: 100px;
 }
 
+.right{
+    color: rgb(32, 185, 32);
+}
+
+.wrong{
+    color: red;
+}
+
 #start-over{
     /* float: center; */
 }
 
 #trivia-game{
+    justify-content: center;
     text-align: center;
     /* width: 50%; */
     /* border-radius: 10px;
     background-color: rgb(14, 101, 172); */
+}
+
+#trivia-container{
+    justify-content: center;
+    background-color: rgba(14, 122, 223, 0.486);
+    border-radius: 10%;
 }
 
 #country-container, #how-to-play, #form, #scoreboard{
