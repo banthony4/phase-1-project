@@ -43,6 +43,7 @@ const renderCountries = (country) => {
     div.append(countryFlag)
 
     const countryName = document.createElement('h3')
+    countryName.className = 'country-name'
     countryName.textContent = country.name.common
 
     // const translation = document.createElement('h2')
@@ -58,10 +59,6 @@ const renderCountries = (country) => {
     countryCard.append(div, countryName, population, continent)
     countryList.appendChild(countryCard)
 };
-
-const renderHint = () => {
-    document.getElementById('show-hint').textContent = 'show hint here'
-}
 
 
 //Render Randomized Country flag to Trivia Game
@@ -97,10 +94,7 @@ const renderTrivia = () => {
     hintBttn.id = 'hint'
     hintBttn.textContent = ' hint? '
     hintBttn.addEventListener("click", renderHint)
-    const showHint = document.createElement('h4')
-    showHint.id = 'show-hint'
-    hintBttn.append(showHint)
-
+    
     const startOver = document.createElement('button');
     startOver.id = 'start-over'
     startOver.textContent = 'START OVER'
@@ -112,25 +106,19 @@ const renderTrivia = () => {
     
     const nameAndHint = document.createElement("div"); 
     nameAndHint.id = "name-hint-div"
-
+    
     const flag = document.createElement("img");
     flag.id = 'country-flag'
-    nameAndHint.append(flag);
-
-    // bella goals/workflow
-    //     goal: create framework to add meaningful variables to array that ben will randomize and we will append to the "#translated-name" h3 element as the translated name whose english title the user will need to guess
-    
-    // steps:
-    // look up path to each country name (in eng) in api
-    // make a fetch request to the api to get country data. 
-    // in the callback function (second .then()), grab the direct path to accessing the english name/title of each country.
-    // manually set a variable (representing each country, ex: "China") to each path 
-    // append each variable into an array, from which ben will randomly select a name.
-    
+    const showHint = document.createElement('h4')
+    showHint.id = 'show-hint'
+    nameAndHint.append(flag, showHint);
     
     const h3 = document.createElement('h3');
     h3.textContent = 'Answer:'
     h3.id = 'h3'
+    const img = document.createElement("img")
+    img.id = 'game-over'
+
 
     const form = document.createElement('form');
     form.id = 'form'
@@ -165,15 +153,8 @@ const renderTrivia = () => {
     // .then(countries => {
     //     countries.forEach(country => console.log(country))
     // })
-
-    // add a submit event listener to the answer form with a callback function that appends the input value into the div "#scoreboard"
-    // select the value of the input form, and assign it to a variable. 
-    // 
-    // callback function will: 
-        // append variabled input value to the scoreboard? 
-        // remember the convert to array option, potentially use forEach to create a list tag for each input value? (can style out the bullet points, etc. later. might be useful to group like this under same tag type)
-    // 
-    triviaGame.append(hintBttn, startOver, timer, nameAndHint, h3, form, scoreboard, score);
+    
+    triviaGame.append(hintBttn, startOver, timer, nameAndHint, img, h3, form, scoreboard, score);
     triviaContainer.append(triviaGame);
 }
 
@@ -203,6 +184,14 @@ function submitAnswer(e) {
     form.reset();
 };
 
+const renderHint = () => {
+    const img = document.getElementById('')
+    fetch(`
+    console.log(img)https://restcountries.com/v3.1/name/${img.alt}`)
+    .then(resp => resp.json())
+    .then(country => document.getElementById('show-hint').textContent = country.capital)
+}
+
 const decrementCounter = () => {
     let timer = document.getElementById('timer')
     if(timer.innerText > 0 ){
@@ -211,9 +200,9 @@ const decrementCounter = () => {
             timer.style.color = 'red';
         }
     } else {
-        clearInterval(timer)
-        gameOver()
+        gameOver();
     }
+    clearInterval(timer);
 };
 
 const gameOver = () => {
@@ -223,23 +212,51 @@ const gameOver = () => {
     document.getElementById('form').style.display = 'none'
     document.getElementById('timer').style.display = 'none'
     document.getElementById('scoreboard').style.display = 'none'
-    document.getElementById('h3').textContent = 'GAME OVER!'
+    document.getElementById('h3').style.display = "none"
+    const img = document.getElementById("game-over")
+    img.src = "https://lh3.googleusercontent.com/F35zenxbXDwNYKyHnEWkcRO7srs80fT59yBxpUYRwUP46H1Qty_j5PYPmRYSCPecBfJIF--wh5N4RKvgFUqmd23QuYFWNckC0H2760rK11mlKzDTUU_9e2v_iVJs7GbB3Hx_VOKQnw=w2400"
 }
 
 const reload = () => {
     location.reload();
 };
 
+// search for countries
+const addSearchBar = () => {
+    const searchBar = document.createElement('form')
+    searchBar.className = 'search-bar'
+    
+    const input = document.createElement('input')
+    input.type = 'search'
+    input.name = 'search'
+    input.id = 'search-bar'
+    input.placeholder = 'Search for a country...'
+    input.addEventListener('input', (e) => countrySearch(e))
+
+    searchBar.append(input)
+    countryList.append(searchBar)
+}
+const countrySearch = (e) => {
+    const value = e.target.value.toLowerCase()
+    const countrySearchName = document.querySelectorAll('.country-name')
+    countrySearchName.forEach((name) => {
+        if(name.textContent.toLowerCase().includes(value)) {
+            name.parentElement.style.display = 'block'
+        } else {
+            name.parentElement.style.display = 'none'
+        }
+    })
+}
+
+
 // Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-    // countryNames()
-})
 studyBttn.addEventListener('click', () => {
     // howToPlay.style.display = 'none'
     countryList.replaceChildren()
     triviaContainer.replaceChildren()
     fetchCountries()
     .then(countries => countries.forEach(renderCountries))
+    addSearchBar()
 })
 triviaBttn.addEventListener('click', () => {
     howToPlay.style.display = 'none'
@@ -249,3 +266,4 @@ triviaBttn.addEventListener('click', () => {
     setInterval(decrementCounter, 1000)
     countryFlags()
 })
+

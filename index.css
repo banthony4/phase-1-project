@@ -4,7 +4,7 @@ h1{
 
 body{
     height: 1000vh;
-    background: linear-gradient(rgb(47,150,163), rgb(48,62,143));
+    /* background: linear-gradient(rgb(47,150,163), rgb(48,62,143)); */
 }
 
 img{
@@ -56,7 +56,7 @@ img{
     text-align: center;
     /* width: 50%; */
     /* border-radius: 10px;
-    background-color: rgb(14, 101, 172); */
+    background-color: ;rgb(14, 101, 172); */
 }
 
 #trivia-container{
@@ -91,4 +91,20 @@ ul{
 li{
     list-style-type: none;
     
+}
+
+#p1, #p2, #p3{
+    font-family: Arial
+}
+
+#model-citizen {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#country-flag {
+    max-width : 37%; 
+    height : auto
 }
