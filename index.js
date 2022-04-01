@@ -65,7 +65,7 @@ const renderCountries = (country) => {
 
 // trivia page
 const renderTrivia = () => {
-    window.scrollTo(0,15)
+    window.scrollTo(0,70)
     const triviaGame = document.createElement('div')
     triviaGame.id = 'trivia-game'
 
